@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{.Title}}</title>
+  </head>
+  <style>
+    .actions {
+      display: block;
+    }
+  </style>
+  <body>
+    <div>
+      {{range .Story}}
+      <p>{{.}}</p>
+      {{end}}
+    </div>
+    <div>
+      {{range .Options}}
+      <a class="actions" href="/story?arc={{.Arc}}">{{.Text}}</a>
+      {{end}}
+    </div>
+  </body>
+</html>

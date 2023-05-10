@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"gopkg.in/yaml.v3"
@@ -21,9 +22,8 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
-		if v, err := pathsToUrls[path]; !err {
+		if v, ok := pathsToUrls[path]; ok {
 			http.Redirect(w, r, v, http.StatusFound)
-			return
 		}
 		fallback.ServeHTTP(w, r)
 	}
@@ -50,14 +50,16 @@ func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	if err := yaml.Unmarshal(yml, &out); err != nil {
 		return nil, err
 	}
+	for _, pathurl := range out {
+		log.Printf("%v: %v", pathurl.Path, pathurl.Url)
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		for _, pathtourl := range out {
 			if pathtourl.Path == r.URL.Path {
 				http.Redirect(w, r, pathtourl.Url, http.StatusFound)
 				return
-			} else {
-				fallback.ServeHTTP(w, r)
 			}
 		}
+		fallback.ServeHTTP(w, r)
 	}, nil
 }

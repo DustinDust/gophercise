@@ -11,6 +11,9 @@
     },
     {
       "path": "cyoa"
+    },
+    {
+      "path": "htmllinkparser"
     }
   ],
   "settings": {}

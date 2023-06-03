@@ -20,6 +20,9 @@
     },
     {
       "path": "hr"
+    },
+    {
+      "path": "cli-taskmanager"
     }
   ],
   "settings": {}

@@ -20,22 +20,8 @@ type DBConnection struct {
 }
 
 func NewConnection() *DBConnection {
-	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s sslmode=disable", host, port, user, password))
-	if err != nil {
-		panic(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
-	conn := &DBConnection{
-		Connection: db,
-	}
-	err = conn.ResetDB(dbname)
-	if err != nil {
-		panic(err)
-	}
-	conn.Connection.Close()
+	conn := &DBConnection{}
+	var err error
 	conn.Connection, err = sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname))
 	if err != nil {
 		panic(err)
@@ -72,3 +58,4 @@ func (d *DBConnection) createPhoneNumberTable() error {
 	_, err := d.Connection.Exec(statement)
 	return err
 }
+
